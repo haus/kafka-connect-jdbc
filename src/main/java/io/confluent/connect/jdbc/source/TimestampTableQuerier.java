@@ -54,6 +54,7 @@ public class TimestampTableQuerier extends TimestampIncrementingTableQuerier {
   private PendingRecord nextRecord;
   private Timestamp latestCommittableTimestamp;
 
+  @SuppressWarnings("checkstyle:parameternumber")
   public TimestampTableQuerier(
       DatabaseDialect dialect,
       QueryMode mode,
@@ -64,7 +65,8 @@ public class TimestampTableQuerier extends TimestampIncrementingTableQuerier {
       Long timestampDelay,
       TimeZone timeZone,
       String suffix,
-      TimestampGranularity timestampGranularity
+      TimestampGranularity timestampGranularity,
+      Long timestampOnsetFuzz
   ) {
     super(
         dialect,
@@ -77,7 +79,8 @@ public class TimestampTableQuerier extends TimestampIncrementingTableQuerier {
         timestampDelay,
         timeZone,
         suffix,
-        timestampGranularity
+        timestampGranularity,
+        timestampOnsetFuzz
     );
 
     this.latestCommittableTimestamp = this.offset.getTimestampOffset();

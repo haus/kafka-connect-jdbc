@@ -38,6 +38,7 @@ public class TableQuerierTest {
   private static final String INCREMENTING_COLUMN_NAME = "column";
   private static final String SUFFIX = "/* SUFFIX */";   
   private static final Long TIMESTAMP_DELAY = 0l;
+  private static final Long TIMESTAMP_ONSET_FUZZ = 0l;
   private static final String QUERY = "SELECT * FROM name";
 
   DatabaseDialect databaseDialectMock;
@@ -71,7 +72,8 @@ public class TableQuerierTest {
                                                     TIMESTAMP_DELAY,
                                                     null,
                                                     SUFFIX,
-                                                    JdbcSourceConnectorConfig.TimestampGranularity.CONNECT_LOGICAL
+                                                    JdbcSourceConnectorConfig.TimestampGranularity.CONNECT_LOGICAL,
+                                                    TIMESTAMP_ONSET_FUZZ
                                                 );
       
     querier.createPreparedStatement(connectionMock);
@@ -92,7 +94,8 @@ public class TableQuerierTest {
                                                     TIMESTAMP_DELAY, 
                                                     null, 
                                                     SUFFIX,
-                                                    JdbcSourceConnectorConfig.TimestampGranularity.CONNECT_LOGICAL
+                                                    JdbcSourceConnectorConfig.TimestampGranularity.CONNECT_LOGICAL,
+                                                    TIMESTAMP_ONSET_FUZZ
                                                 );
       
     querier.createPreparedStatement(connectionMock);

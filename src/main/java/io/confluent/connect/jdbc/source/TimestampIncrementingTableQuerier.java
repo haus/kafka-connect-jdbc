@@ -75,6 +75,7 @@ public class TimestampIncrementingTableQuerier extends TableQuerier implements C
   private final List<ColumnId> timestampColumns;
   private String incrementingColumnName;
   private final long timestampDelay;
+  private final long timestampOnsetFuzz;
   private final TimeZone timeZone;
 
   public TimestampIncrementingTableQuerier(DatabaseDialect dialect, QueryMode mode, String name,
@@ -83,12 +84,14 @@ public class TimestampIncrementingTableQuerier extends TableQuerier implements C
                                            String incrementingColumnName,
                                            Map<String, Object> offsetMap, Long timestampDelay,
                                            TimeZone timeZone, String suffix,
-                                           TimestampGranularity timestampGranularity) {
+                                           TimestampGranularity timestampGranularity,
+                                           Long timestampOnsetFuzz) {
     super(dialect, mode, name, topicPrefix, suffix);
     this.incrementingColumnName = incrementingColumnName;
     this.timestampColumnNames = timestampColumnNames != null
         ? timestampColumnNames : Collections.emptyList();
     this.timestampDelay = timestampDelay;
+    this.timestampOnsetFuzz = timestampOnsetFuzz;
     this.committedOffset = this.offset = TimestampIncrementingOffset.fromMap(offsetMap);
 
     this.timestampColumns = new ArrayList<>();
@@ -243,6 +246,9 @@ public class TimestampIncrementingTableQuerier extends TableQuerier implements C
 
   @Override
   public Timestamp beginTimestampValue() {
+    if (timestampOnsetFuzz <= offset.getTimestampOffset().getTime()) {
+      return new Timestamp(offset.getTimestampOffset().getTime() - timestampOnsetFuzz);
+    }
     return offset.getTimestampOffset();
   }
 
