@@ -298,16 +298,16 @@ public class JdbcSourceConnectorConfig extends AbstractConfig {
   public static final long TIMESTAMP_DELAY_INTERVAL_MS_DEFAULT = 0;
   private static final String TIMESTAMP_DELAY_INTERVAL_MS_DISPLAY = "Delay Interval (ms)";
 
-  public static final String TIMESTAMP_ONSET_FUZZ_MS_CONFIG =
-          "timestamp.onset.fuzz.ms";
-  private static final String TIMESTAMP_ONSET_FUZZ_MS_DOC =
+  public static final String TIMESTAMP_OVERLAP_MS_CONFIG =
+          "timestamp.overlap.ms";
+  private static final String TIMESTAMP_OVERLAP_MS_DOC =
       "Interval to subtract from the query start timestamp to allow for database replication lag."
       + " Use this to include records that \"show up late,\" meaning that the timestamp field"
       + " may contain a value that is prior to start time for the query. This prefers duplication"
       + " over missing records. Every query will overlap the previous query timestamp by this"
       + " interval.";
-  public static final long TIMESTAMP_ONSET_FUZZ_MS_DEFAULT = 0;
-  private static final String TIMESTAMP_ONSET_FUZZ_MS_DISPLAY = "Onset Fuzz (ms)";
+  public static final long TIMESTAMP_OVERLAP_MS_DEFAULT = 0;
+  private static final String TIMESTAMP_OVERLAP_MS_DISPLAY = "Query start time Overlap (ms)";
 
   public static final String DB_TIMEZONE_CONFIG = "db.timezone";
   public static final String DB_TIMEZONE_DEFAULT = "UTC";
@@ -795,15 +795,15 @@ public class JdbcSourceConnectorConfig extends AbstractConfig {
         TIMESTAMP_GRANULARITY_DISPLAY,
         TIMESTAMP_GRANULARITY_RECOMMENDER
     ).define(
-        TIMESTAMP_ONSET_FUZZ_MS_CONFIG,
+            TIMESTAMP_OVERLAP_MS_CONFIG,
         Type.LONG,
-        TIMESTAMP_ONSET_FUZZ_MS_DEFAULT,
+            TIMESTAMP_OVERLAP_MS_DEFAULT,
         Importance.LOW,
-        TIMESTAMP_ONSET_FUZZ_MS_DOC,
+            TIMESTAMP_OVERLAP_MS_DOC,
         CONNECTOR_GROUP,
         ++orderInGroup,
         Width.MEDIUM,
-        TIMESTAMP_ONSET_FUZZ_MS_DISPLAY
+            TIMESTAMP_OVERLAP_MS_DISPLAY
     );
   }
 

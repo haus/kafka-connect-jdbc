@@ -181,8 +181,8 @@ public class JdbcSourceTask extends SourceTask {
         = config.getList(JdbcSourceTaskConfig.TIMESTAMP_COLUMN_NAME_CONFIG);
     Long timestampDelayInterval
         = config.getLong(JdbcSourceTaskConfig.TIMESTAMP_DELAY_INTERVAL_MS_CONFIG);
-    final Long timestampOnsetFuzz
-        = config.getLong(JdbcSourceTaskConfig.TIMESTAMP_ONSET_FUZZ_MS_CONFIG);
+    final Long timestampOverlapMs
+        = config.getLong(JdbcSourceTaskConfig.TIMESTAMP_OVERLAP_MS_CONFIG);
     boolean validateNonNulls
         = config.getBoolean(JdbcSourceTaskConfig.VALIDATE_NON_NULL_CONFIG);
     TimeZone timeZone = config.timeZone();
@@ -257,7 +257,7 @@ public class JdbcSourceTask extends SourceTask {
                 timeZone,
                 suffix,
                 timestampGranularity,
-                timestampOnsetFuzz
+                timestampOverlapMs
             )
         );
       } else if (mode.equals(JdbcSourceTaskConfig.MODE_TIMESTAMP)) {
@@ -273,7 +273,7 @@ public class JdbcSourceTask extends SourceTask {
                 timeZone,
                 suffix,
                 timestampGranularity,
-                timestampOnsetFuzz
+                timestampOverlapMs
             )
         );
       } else if (mode.endsWith(JdbcSourceTaskConfig.MODE_TIMESTAMP_INCREMENTING)) {
@@ -290,7 +290,7 @@ public class JdbcSourceTask extends SourceTask {
                 timeZone,
                 suffix,
                 timestampGranularity,
-                timestampOnsetFuzz
+                timestampOverlapMs
             )
         );
       }

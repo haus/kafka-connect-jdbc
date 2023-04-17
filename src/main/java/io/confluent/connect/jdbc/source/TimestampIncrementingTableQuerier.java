@@ -75,7 +75,7 @@ public class TimestampIncrementingTableQuerier extends TableQuerier implements C
   private final List<ColumnId> timestampColumns;
   private String incrementingColumnName;
   private final long timestampDelay;
-  private final long timestampOnsetFuzz;
+  private final long timestampOverlapMs;
   private final TimeZone timeZone;
 
   public TimestampIncrementingTableQuerier(DatabaseDialect dialect, QueryMode mode, String name,
@@ -85,13 +85,13 @@ public class TimestampIncrementingTableQuerier extends TableQuerier implements C
                                            Map<String, Object> offsetMap, Long timestampDelay,
                                            TimeZone timeZone, String suffix,
                                            TimestampGranularity timestampGranularity,
-                                           Long timestampOnsetFuzz) {
+                                           Long timestampOverlapMs) {
     super(dialect, mode, name, topicPrefix, suffix);
     this.incrementingColumnName = incrementingColumnName;
     this.timestampColumnNames = timestampColumnNames != null
         ? timestampColumnNames : Collections.emptyList();
     this.timestampDelay = timestampDelay;
-    this.timestampOnsetFuzz = timestampOnsetFuzz;
+    this.timestampOverlapMs = timestampOverlapMs;
     this.committedOffset = this.offset = TimestampIncrementingOffset.fromMap(offsetMap);
 
     this.timestampColumns = new ArrayList<>();
@@ -246,8 +246,8 @@ public class TimestampIncrementingTableQuerier extends TableQuerier implements C
 
   @Override
   public Timestamp beginTimestampValue() {
-    if (timestampOnsetFuzz <= offset.getTimestampOffset().getTime()) {
-      return new Timestamp(offset.getTimestampOffset().getTime() - timestampOnsetFuzz);
+    if (timestampOverlapMs <= offset.getTimestampOffset().getTime()) {
+      return new Timestamp(offset.getTimestampOffset().getTime() - timestampOverlapMs);
     }
     return offset.getTimestampOffset();
   }

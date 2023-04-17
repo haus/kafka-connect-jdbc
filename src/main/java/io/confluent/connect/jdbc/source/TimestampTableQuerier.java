@@ -66,7 +66,7 @@ public class TimestampTableQuerier extends TimestampIncrementingTableQuerier {
       TimeZone timeZone,
       String suffix,
       TimestampGranularity timestampGranularity,
-      Long timestampOnsetFuzz
+      Long timestampOverlapMs
   ) {
     super(
         dialect,
@@ -80,7 +80,7 @@ public class TimestampTableQuerier extends TimestampIncrementingTableQuerier {
         timeZone,
         suffix,
         timestampGranularity,
-        timestampOnsetFuzz
+        timestampOverlapMs
     );
 
     this.latestCommittableTimestamp = this.offset.getTimestampOffset();
