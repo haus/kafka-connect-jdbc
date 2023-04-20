@@ -247,7 +247,11 @@ public class TimestampIncrementingTableQuerier extends TableQuerier implements C
   @Override
   public Timestamp beginTimestampValue() {
     if (timestampOverlapMs <= offset.getTimestampOffset().getTime()) {
-      return new Timestamp(offset.getTimestampOffset().getTime() - timestampOverlapMs);
+      final Timestamp ts =
+              new Timestamp(offset.getTimestampOffset().getTime() - timestampOverlapMs);
+      log.trace("Shifting beginTimestampValue by timestamp.offset.ms {} to {}",
+              timestampOverlapMs, ts);
+      return ts;
     }
     return offset.getTimestampOffset();
   }
