@@ -43,6 +43,8 @@ import io.confluent.connect.jdbc.util.ColumnId;
 import io.confluent.connect.jdbc.util.DateTimeUtils;
 import io.confluent.connect.jdbc.util.ExpressionBuilder;
 
+import static io.confluent.connect.jdbc.source.JdbcSourceConnectorConfig.TIMESTAMP_OVERLAP_MS_CONFIG;
+
 /**
  * <p>
  *   TimestampIncrementingTableQuerier performs incremental loading of data using two mechanisms: a
@@ -249,8 +251,9 @@ public class TimestampIncrementingTableQuerier extends TableQuerier implements C
     if (timestampOverlapMs <= offset.getTimestampOffset().getTime()) {
       final Timestamp ts =
               new Timestamp(offset.getTimestampOffset().getTime() - timestampOverlapMs);
-      log.trace("Shifting beginTimestampValue by timestamp.offset.ms {} to {}",
-              timestampOverlapMs, ts);
+      log.trace("{} shifting beginTimestampValue by {} from {} to {}",
+              TIMESTAMP_OVERLAP_MS_CONFIG, timestampOverlapMs,
+              offset.getTimestampOffset(), ts);
       return ts;
     }
     return offset.getTimestampOffset();
