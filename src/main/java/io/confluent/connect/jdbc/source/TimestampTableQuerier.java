@@ -163,6 +163,7 @@ public class TimestampTableQuerier extends TimestampIncrementingTableQuerier {
     Timestamp timestamp = timestampOffset.hasTimestampOffset()
                           ? timestampOffset.getTimestampOffset()
                           : null;
+    log.trace("extracted record timestamp: {}", timestamp);
     return new PendingRecord(partition, timestamp, topic, record.schema(), record);
   }
 
